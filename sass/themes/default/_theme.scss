@@ -11,7 +11,7 @@ $gray-blue: #78909c;
 $gray-blue-light: rgb(182, 193, 199);
 
 /* Operator palette */
-$livi-blue: #00AFFF;
+$livi-blue: #007ac9;
 $livi-gold: rgb(233, 171, 0);
 $livi-bus-blue: rgb(0, 136, 206);
 $livi-airplane-blue: rgb(0, 70, 173);
@@ -24,7 +24,7 @@ $livi-tram-green: rgb(106, 137, 37);
 $background-color: #eef1f3;
 $primary-color: $livi-blue;
 $primary-font-color: $white;
-$secondary-color: #008bde;
+$secondary-color: darken($livi-blue, 7%);
 $secondary-font-color: $white;
 $favourite-color: $livi-gold;
 $hilight-color: $livi-blue;
@@ -101,7 +101,7 @@ $border-radius-bigger: 8px;
 /* Navbar logo */
 $nav-logo: url('digitransit-logo.png');
 $nav-logo-width: 170px;
-$nav-logo-height: 1.8em;
+$nav-logo-height: 2em;
 
 $spinner-image: url('../default/default-spinner.png');
 $no-favourites-img: url('../default/favourites_empty_tip.png');
