@@ -69,11 +69,11 @@ class RouteMarkerPopup extends React.Component {
         />
         <div className="bottom location">
           <Link to={tripPath} >
-            Lähdön tiedot
+           Trip Info
           </Link>
           <br />
           <Link to={patternPath} className="route" >
-            Linjan tiedot
+            Route Info
           </Link>
         </div>
       </div>
