@@ -11,7 +11,7 @@ $gray-blue: #78909c;
 $gray-blue-light: rgb(182, 193, 199);
 
 /* Operator palette */
-$livi-blue: #000099;
+$livi-blue: #007ac9;
 $livi-gold: rgb(233, 171, 0);
 $livi-bus-blue: rgb(0, 136, 206);
 $livi-airplane-blue: rgb(0, 70, 173);
@@ -24,7 +24,7 @@ $livi-tram-green: rgb(106, 137, 37);
 $background-color: #eef1f3;
 $primary-color: $livi-blue;
 $primary-font-color: $white;
-$secondary-color: #008bde;
+$secondary-color: darken($livi-blue, 7%);
 $secondary-font-color: $white;
 $favourite-color: $livi-gold;
 $hilight-color: $livi-blue;
