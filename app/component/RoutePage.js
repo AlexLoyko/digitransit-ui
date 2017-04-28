@@ -10,6 +10,7 @@ import RoutePatternSelect from './RoutePatternSelect';
 import RouteAgencyInfo from './RouteAgencyInfo';
 import RouteNumber from './RouteNumber';
 import { startRealTimeClient, stopRealTimeClient } from '../action/realTimeClientAction';
+import config from '../configurations/config.default';
 
 class RoutePage extends React.Component {
 
@@ -38,7 +39,18 @@ class RoutePage extends React.Component {
     if (this.props.route == null) { return; }
     const route = this.props.route.gtfsId.split(':');
 
-    if (route[0].toLowerCase() === 'hsl' || route[0].toLowerCase() === 'mta') {
+    let shouldStartRealtimeClient = false;
+
+    if (config.feed_id) {
+      for (let i = 0; i < config.feed_id.length; i++) {
+        if (route[0].toLowerCase() === config.feed_id[i].toLowerCase()) {
+          shouldStartRealtimeClient = true;
+          break;
+        }
+      }
+    }
+
+    if (route[0].toLowerCase() === 'hsl' || shouldStartRealtimeClient) {
       this.context.executeAction(startRealTimeClient, {
         route: route[1],
       });
