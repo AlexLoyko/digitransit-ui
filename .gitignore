@@ -28,7 +28,7 @@ sass/themes/*
 !sass/themes/turku
 
 app/configurations/config.*.js
-!app/configurations/config.default.js
+app/configurations/config.default.js
 !app/configurations/config.hsl.js
 !app/configurations/config.joensuu.js
 !app/configurations/config.jyvaskyla.js

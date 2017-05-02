@@ -10,6 +10,7 @@ import RoutePatternSelect from './RoutePatternSelect';
 import RouteAgencyInfo from './RouteAgencyInfo';
 import RouteNumber from './RouteNumber';
 import { startRealTimeClient, stopRealTimeClient } from '../action/realTimeClientAction';
+import config from '../configurations/config.default';
 
 class RoutePage extends React.Component {
 
@@ -38,7 +39,20 @@ class RoutePage extends React.Component {
     if (this.props.route == null) { return; }
     const route = this.props.route.gtfsId.split(':');
 
-    if (route[0].toLowerCase() === 'hsl' || route[0].toLowerCase() === 'mta') {
+
+    let shouldStartRealtimeClient = false;
+
+    if (config.feed_id) {
+      for (let i = 0; i < config.feed_id.length; i++) {
+        if (route[0].toLowerCase() === config.feed_id[i].toLowerCase()) {
+          shouldStartRealtimeClient = true;
+          break;
+        }
+      }
+    }
+
+    if (route[0].toLowerCase() === 'hsl' || shouldStartRealtimeClient) {
+
       this.context.executeAction(startRealTimeClient, {
         route: route[1],
       });
@@ -83,11 +97,12 @@ class RoutePage extends React.Component {
     }
 
     return (
+
       <div>{this.props.route.type === 715 && <CallAgencyWarning route={this.props.route} />}
         <div className="tabs route-tabs">
           <nav className={cx('tabs-navigation', { 'bp-large': this.context.breakpoint === 'large' })}>
             { this.context.breakpoint === 'large' && (
-            <RouteNumber mode={this.props.route.mode} text={this.props.route.shortName} />
+            <RouteNumber color={this.props.route.color ? `#${this.props.route.color}` : null} mode={this.props.route.mode} text={this.props.route.shortName} />
           )}
             <a
               className={cx({ 'is-active': activeTab === 'pysakit' })}
@@ -142,6 +157,7 @@ export default Relay.createContainer(RoutePage, {
       Relay.QL`
       fragment on Route {
         gtfsId
+        color
         shortName
         longName
         mode
