@@ -9,20 +9,6 @@ const round = (distance) => {
   return distance - (distance % 100);
 };
 
-// function displayImperialDistance(meters) {
-//   const feet = meters * 3.2808399;
-
-//   /* eslint-disable yoda */
-
-//   if (feet < 100) {
-//     return `${Math.round(feet / 10) * 10} ft`; // Tens of feet
-//   } else if (feet < 1000) {
-//     return `${Math.round(feet / 50) * 50} ft`; // fifty feet
-//   }
-//   return `${(Math.round(feet / 528)) / 10} mi`; // tenth of a mile
-// }
-
-
 const Distance = (props) => {
   let distance;
   let roundedDistance;
