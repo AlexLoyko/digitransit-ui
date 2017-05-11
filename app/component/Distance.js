@@ -16,7 +16,7 @@ const Distance = (props, config) => {
   if (props.distance) {
     roundedDistance = round(props.distance);
 
-    if (isImperial(config)) {
+    if (isImperial(config.config)) {
       distance = displayImperialDistance(props.distance);
     } else if (roundedDistance < 1000) {
       distance = `${roundedDistance}m`;

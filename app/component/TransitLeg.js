@@ -106,7 +106,7 @@ class TransitLeg extends React.Component {
           />
         </Link>
       </div>
-      <ItineraryCircleLine index={this.props.index} modeClassName={modeClassName} />
+      <ItineraryCircleLine color={this.props.leg.route ? `#${this.props.leg.route.color}` : 'currentColor'} index={this.props.index} modeClassName={modeClassName} />
       <div
         style={{ color: this.props.leg.route ? `#${this.props.leg.route.color}` : 'currentColor' }}
         onClick={this.props.focusAction}
