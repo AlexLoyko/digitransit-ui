@@ -8,6 +8,7 @@ import RouteNumber from './RouteNumber';
 import Icon from './Icon';
 import StopCode from './StopCode';
 import LegAgencyInfo from './LegAgencyInfo';
+import ItineraryCircleLine from './ItineraryCircleLine';
 
 class CallAgencyLeg extends React.Component {
 
@@ -31,15 +32,15 @@ class CallAgencyLeg extends React.Component {
         className="row itinerary-row"
       >
         <div className="itinerary-call-agency-warning" />
-        <Link
-          onClick={e => e.stopPropagation()}
-          to={
-          `/linjat/${this.props.leg.route.gtfsId}/pysakit/${
-          this.props.leg.trip.pattern.code}/${this.props.leg.trip.gtfsId}`
-          // TODO: Create a helper function for generationg links
-        }
-        >
-          <div className="small-2 columns itinerary-time-column call">
+        <div className="small-2 columns itinerary-time-column call">
+          <Link
+            onClick={e => e.stopPropagation()}
+            to={
+            `/linjat/${this.props.leg.route.gtfsId}/pysakit/${
+            this.props.leg.trip.pattern.code}/${this.props.leg.trip.gtfsId}`
+            // TODO: Create a helper function for generationg links
+          }
+          >
             <div className="itinerary-time-column-time">
               <span className={this.props.leg.realTime ? 'realtime' : ''}>
                 {this.props.leg.realTime &&
@@ -54,8 +55,9 @@ class CallAgencyLeg extends React.Component {
               vertical
               fadeLong
             />
-          </div>
-        </Link>
+          </Link>
+        </div>
+        <ItineraryCircleLine index={this.props.index} modeClassName={modeClassName} />
         <div
           onClick={this.props.focusAction}
           className={`small-10 columns itinerary-instruction-column ${firstLegClassName} ${modeClassName}`}
