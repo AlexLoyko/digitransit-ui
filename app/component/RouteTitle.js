@@ -16,6 +16,7 @@ const RouteTitle = ({ route }, { breakpoint }) => (
       <RouteNumberContainer
         className="route-number-title"
         route={route}
+        color={route.color}
         vertical={false}
         text={route.shortName}
       />
@@ -27,6 +28,7 @@ RouteTitle.propTypes = {
     gtfsId: React.PropTypes.string.isRequired,
     mode: React.PropTypes.string.isRequired,
     shortName: React.PropTypes.string,
+    color: React.PropTypes.string,
   }),
 };
 
@@ -41,6 +43,7 @@ export default Relay.createContainer(RouteTitle, {
       fragment on Route {
         gtfsId
         shortName
+        color
         mode
         type
       }
