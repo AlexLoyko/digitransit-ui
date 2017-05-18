@@ -9,14 +9,14 @@ const round = (distance) => {
   return distance - (distance % 100);
 };
 
-const Distance = (props, config) => {
+const Distance = (props, context) => {
   let distance;
   let roundedDistance;
 
   if (props.distance) {
     roundedDistance = round(props.distance);
 
-    if (isImperial(config.config)) {
+    if (isImperial(context.config)) {
       distance = displayImperialDistance(props.distance);
     } else if (roundedDistance < 1000) {
       distance = `${roundedDistance}m`;
