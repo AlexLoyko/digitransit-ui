@@ -48,9 +48,6 @@ export default class Line extends React.Component {
   render() {
     const className = cx([this.props.mode, { thin: this.props.thin }]);
 
-    const filteredPoints =
-      this.props.geometry.filter(point => point.lat != null && point.lot != null);
-
     const lineConfig = this.context.config.map.line;
     let haloWeight = this.props.thin ? lineConfig.halo.thinWeight : lineConfig.halo.weight;
     let legWeight = this.props.thin ? lineConfig.leg.thinWeight : lineConfig.leg.weight;
