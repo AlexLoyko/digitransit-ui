@@ -43,9 +43,6 @@ class RouteLine extends React.Component {
       );
     }
 
-    const filteredPoints =
-      this.props.pattern.geometry.filter(point => point.lat != null && point.lot !== null);
-
     const filteredIds = this.props.filteredStops ?
       this.props.filteredStops.map(stop => stop.stopId) : [];
 
@@ -68,7 +65,7 @@ class RouteLine extends React.Component {
         <Line
           key="line"
           color={this.props.pattern.route.color ? `#${this.props.pattern.route.color}` : null}
-          geometry={filteredPoints }
+          geometry={this.props.pattern.geometry || this.props.pattern.stops}
           mode={modeClass}
           thin={this.props.thin}
         />
