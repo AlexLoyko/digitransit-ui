@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { isMobile } from '../util/browser';
 
+const setSelectionRange = e => e.target.setSelectionRange(0, 2);
+
 export default class ItineraryTimePicker extends React.Component {
   static propTypes = {
     changeTime: PropTypes.func.isRequired,
@@ -17,6 +19,21 @@ export default class ItineraryTimePicker extends React.Component {
       oldMinute: this.props.initMin,
     };
     this.onChangeTime = this.onChangeTime.bind(this);
+  }
+
+  componentWillReceiveProps({ initHours, initMin }) {
+    if (
+      Number(this.hourEl.value) !== Number(initHours) ||
+      Number(this.minEl.value) !== Number(initMin)
+    ) {
+      this.setState({
+        hours: initHours,
+        minutes: initMin,
+        lastKey: 0,
+        oldHour: initHours,
+        oldMinute: initMin,
+      });
+    }
   }
 
   onChangeTime(event) {
@@ -41,14 +58,23 @@ export default class ItineraryTimePicker extends React.Component {
             max: timePropertyId === 'hours' ? 23 : 59,
           })
           : input;
+        // Send new time request
+        const requestString = timePropertyId === 'hours' ? `${newTime} ${this.state.minutes}` : `${this.state.hours} ${newTime}`;
+        this.props.changeTime({ target: { value: requestString } });
+        // If set hours are 3-9 or two digits, switch to minute input
+        if ((newTime.length === 2 || (newTime < 10 && newTime > 2)) && timePropertyId === 'hours') {
+          this.minEl.focus();
+          this.minEl.setSelectionRange(0, 2);
+        }
         this.setState({
           [timePropertyId]: newTime,
           [oldPropertyId]: newTime,
         });
-        // Send new time request
-        const requestString = timePropertyId === 'hours' ? `${newTime} ${this.state.minutes}` : `${this.state.hours} ${newTime}`;
-        this.props.changeTime({ target: { value: requestString } });
       } else if (input.length === 3) {
+        const requestString = timePropertyId === 'hours'
+        ? `${event.target.value.slice(-1)} ${this.state.minutes}`
+        : `${this.state.hours} ${event.target.value.slice(-1)}`;
+        this.props.changeTime({ target: { value: requestString } });
         this.setState({
           [timePropertyId]: event.target.value.slice(-1),
           [oldPropertyId]: event.target.value.slice(-1),
@@ -116,7 +142,10 @@ export default class ItineraryTimePicker extends React.Component {
 
   handleBlur = (event) => {
     // If user erased the input by backspace/delete, return the original value
-    if (this.state.lastKey === 8 || this.state.lastKey === 46) {
+    if (
+      this.state.lastKey === 8 ||
+      this.state.lastKey === 46
+    ) {
       if (event.target.id === 'inputHours') {
         this.setState({
           hours: this.state.oldHour,
@@ -127,19 +156,27 @@ export default class ItineraryTimePicker extends React.Component {
           minutes: this.state.oldMinute,
         });
       }
+    } else {
+      const id = event.target.id === 'inputHours' ? 'hours' : 'minutes';
+      this.setState({
+        [id]: this.padDigits(event.target.value),
+      });
     }
   }
 
   handleKeyDown = (event) => {
-    if (event.keyCode === 8 || event.keyCode === 46) {
+    if (
+      event.keyCode === 8 ||
+      event.keyCode === 46
+    ) {
       if (event.target.id === 'inputHours') {
         this.setState({
-          hours: 0,
+          hours: '',
         });
       }
       if (event.target.id === 'inputMinutes') {
         this.setState({
-          minutes: 0,
+          minutes: '',
         });
       }
     }
@@ -165,34 +202,26 @@ export default class ItineraryTimePicker extends React.Component {
         className={`time-input-container time-selector ${!isMobile ? 'time-selector' : ''}`}
       >
         <input
-          type="text"
+          type="tel"
           ref={el => (this.hourEl = el)}
           id="inputHours"
           className="time-input-field"
-          value={
-            this.state.hours > 9
-              ? this.state.hours
-              : this.padDigits(parseInt(this.state.hours, 10))
-          }
+          value={this.state.hours}
           maxLength={3}
-          onClick={e => e.target.setSelectionRange(0, 2)}
+          onClick={setSelectionRange}
           onChange={this.onChangeTime}
           onBlur={this.handleBlur}
           onKeyDown={this.handleKeyDown}
         />
         <div className="digit-separator">:</div>
         <input
-          type="text"
+          type="tel"
           ref={el => (this.minEl = el)}
           id="inputMinutes"
           className="time-input-field"
-          value={
-            this.state.minutes > 9
-              ? this.state.minutes
-              : this.padDigits(parseInt(this.state.minutes, 10))
-          }
+          value={this.state.minutes}
           maxLength={3}
-          onClick={e => e.target.setSelectionRange(0, 2)}
+          onClick={setSelectionRange}
           onChange={this.onChangeTime}
           onBlur={this.handleBlur}
           onKeyDown={this.handleKeyDown}

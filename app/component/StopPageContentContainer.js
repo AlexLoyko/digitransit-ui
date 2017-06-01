@@ -3,10 +3,57 @@ import Relay from 'react-relay';
 import some from 'lodash/some';
 import mapProps from 'recompose/mapProps';
 import getContext from 'recompose/getContext';
+import StopPageTabContainer from './StopPageTabContainer';
 import DepartureListHeader from './DepartureListHeader';
 import DepartureListContainer from './DepartureListContainer';
 import StopPageActionBar from './StopPageActionBar';
+import TimetableContainer from './TimetableContainer';
 import Error404 from './404';
+
+class StopPageContentOptions extends React.Component {
+
+  static propTypes = {
+    selectedTab: React.PropTypes.func,
+    breakPoint: React.PropTypes.string,
+    printUrl: React.PropTypes.string,
+    departureProps: React.PropTypes.object,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showTab: 'right-now', // Show right-now as default
+    };
+  }
+
+  setTab = (val) => {
+    this.setState({
+      showTab: val,
+    });
+  }
+
+  render() {
+    // Currently shows only next departures, add Timetables
+    return (<div className="stop-page-content-wrapper">
+      <div>
+        <StopPageTabContainer selectedTab={this.setTab} />
+        <div className="stop-tabs-fillerline" />
+        {this.state.showTab === 'right-now' && <DepartureListHeader />}
+      </div>
+      {this.state.showTab === 'right-now' &&
+        <div className="stop-scroll-container momentum-scroll">
+          <DepartureListContainerWithProps {...this.props.departureProps} />
+        </div>
+      }
+      {this.state.showTab === 'timetable' &&
+      <div className="momentum-scroll">
+        <StopPageActionBar breakpoint={this.props.breakPoint} printUrl={this.props.printUrl} />
+        <TimetableContainer stop={this.props.departureProps.stop} />
+      </div>
+      }
+    </div>);
+  }
+}
 
 const DepartureListContainerWithProps = mapProps(props => ({
   stoptimes: props.stop.stoptimes,
@@ -21,11 +68,11 @@ const DepartureListContainerWithProps = mapProps(props => ({
 
 const StopPageContent = getContext({ breakpoint: React.PropTypes.string.isRequired })(props => (
   some(props.routes, 'fullscreenMap') && props.breakpoint !== 'large' ? null : (
-    <div className="stop-page-content-wrapper">
-      <StopPageActionBar breakpoint={props.breakpoint} printUrl={props.stop.url} />
-      <DepartureListHeader />
-      <DepartureListContainerWithProps {...props} />
-    </div>
+    <StopPageContentOptions
+      breakPoint={props.breakpoint}
+      printUrl={props.stop.url}
+      departureProps={props}
+    />
   )));
 
 const StopPageContentOrEmpty = (props) => {
@@ -47,6 +94,7 @@ export default Relay.createContainer(StopPageContentOrEmpty, {
         stoptimes: stoptimesWithoutPatterns(startTime: $startTime, timeRange: $timeRange, numberOfDepartures: $numberOfDepartures) {
           ${DepartureListContainer.getFragment('stoptimes')}
         }
+        ${TimetableContainer.getFragment('stop')}
       }
     `,
   },

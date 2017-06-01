@@ -11,6 +11,7 @@ class SummaryPlanContainer extends React.Component {
     plan: React.PropTypes.object.isRequired,
     itineraries: React.PropTypes.array.isRequired,
     children: React.PropTypes.node,
+    error: React.PropTypes.string,
     params: React.PropTypes.shape({
       from: React.PropTypes.string.isRequired,
       to: React.PropTypes.string.isRequired,
@@ -69,17 +70,24 @@ class SummaryPlanContainer extends React.Component {
   }
 
   getActiveIndex() {
-    const state = this.context.location.state || {};
-    return state.summaryPageSelected || 0;
+    if (this.context.location.state) {
+      return this.context.location.state.summaryPageSelected || 0;
+    }
+    /*
+     * If state does not exist, for example when accessing the summary
+     * page by an external link, we check if an itinerary selection is
+     * supplied in URL and make that the active selection.
+     */
+    const lastURLSegment = this.context.location.pathname.split('/').pop();
+    return isNaN(lastURLSegment) ? 0 : Number(lastURLSegment);
   }
 
   render() {
     const currentTime = this.context.getStore('TimeStore').getCurrentTime().valueOf();
     const activeIndex = this.getActiveIndex();
-    if (!this.props.itineraries) {
+    if (!this.props.itineraries && this.props.error === null) {
       return <Loading />;
     }
-
     return (
       <div className="summary">
         <ItinerarySummaryListContainer

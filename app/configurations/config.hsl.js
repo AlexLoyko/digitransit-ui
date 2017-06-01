@@ -13,6 +13,9 @@ export default {
     PARK_AND_RIDE_MAP: `${MAP_URL}/map/v1/hsl-parkandride-map/`,
     TICKET_SALES_MAP: `${MAP_URL}/map/v1/hsl-ticket-sales-map/`,
     FONT: 'https://cloud.typography.com/6364294/6653152/css/fonts.css',
+    MAP: {
+      debug: 'https://dev-api.digitransit.fi/routing/v1/routers/hsl/inspector/tile/traversal/',
+    },
   },
 
   contactName: {
@@ -27,6 +30,8 @@ export default {
   defaultLanguage: 'fi',
 
   favicon: './sass/themes/hsl/icon_favicon-reittiopas.svg',
+
+  feedIds: ['HSL'],
 
   preferredAgency: 'HSL',
   showAdformTrackingPixel: true,
