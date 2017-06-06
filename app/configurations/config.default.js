@@ -3,15 +3,16 @@ const API_URL = process.env.API_URL || 'https://planmytrip.nyc/api';
 const MAP_URL = process.env.MAP_URL || 'https://planmytrip.nyc/api';
 const APP_PATH = process.env.APP_PATH || '';
 const APP_DESCRIPTION = 'MTA All Agency App Trip Planner BETA';
+const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000;
 
 export default {
   CONFIG,
-
+  OTPTimeout: OTP_TIMEOUT,
   URL: {
     API_URL,
-   // OTP: `${API_URL}/routing/v1/routers/default/`,
-   //
-   
+    //OTP: `${API_URL}/routing/v1/routers/default/`,
+
+
     OTP: `http://localhost:9090/otp/routers/default/`,
     MAP: {
            default: `${API_URL}/map/v1/`,
@@ -28,6 +29,8 @@ export default {
   title: 'MTA Trip Planner',
   shouldShowIntro: false,
   feed_id: ['MTA','NJT','NJB'],
+
+  searchSources: ['oa', 'osm', 'nlsfi'],
 
   contactName: {
     default: "MTA Trip Planner",
@@ -343,7 +346,7 @@ export default {
   },
 
   areaPolygon: [
-    [-74.2501853, 40.497640600000004],    
+    [-74.2501853, 40.497640600000004],
     [-74.26725400000001, 40.499914000000004],
     [-74.26745700000001, 40.503384000000004],
     [-74.2674978, 40.5067291],
@@ -416,6 +419,8 @@ export default {
   },
 
   staticMessages: [],
+
+  imperialEnabled: true,
 
   minutesToDepartureLimit: 9,
 };
