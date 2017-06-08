@@ -26,6 +26,7 @@ WORKDIR ${WORK}
 ADD . ${WORK}
 
 RUN \
+  npm install -g --unsafe-perm node-gyp && \	
   yarn install --silent && \
   yarn add --force node-sass && \
   yarn run build && \
