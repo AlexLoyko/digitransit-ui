@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { isBrowser } from '../../../util/browser';
 
@@ -25,7 +26,7 @@ function fixName(name) {
 
 export default class LegMarker extends React.Component {
   static contextTypes = {
-    map: React.PropTypes.object.isRequired,
+    map: PropTypes.object.isRequired,
   }
 
   static propTypes = {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
@@ -33,7 +34,7 @@ RouteTitle.propTypes = {
 };
 
 RouteTitle.contextTypes = {
-  breakpoint: React.PropTypes.string,
+  breakpoint: PropTypes.string,
 };
 
 export default Relay.createContainer(RouteTitle, {
