@@ -64,7 +64,6 @@ export default class SearchInputContainer extends Component {
       suggestions: results,
       focusedItemIndex: 0,
     }, () => this.focusItem(0));
-
   }
 
   /**
