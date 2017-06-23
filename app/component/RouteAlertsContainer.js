@@ -35,6 +35,8 @@ const getAlerts = (route, currentTime, intl) => {
     // all other strings would also be available in the same language...
     let description = find(alert.alertDescriptionTextTranslations,
                       ['language', intl.locale]);
+    const alertText = alert.alertDescriptionText;
+
     if (!description) {
       description = find(alert.alertDescriptionTextTranslations,
                     ['language', 'en']);
@@ -44,22 +46,39 @@ const getAlerts = (route, currentTime, intl) => {
     }
     if (description) {
       description = description.text;
+    } else if (alertText) {
+      description = alertText;
     }
 
-    const startTime = moment(alert.effectiveStartDate * 1000);
-    const endTime = moment(alert.effectiveEndDate * 1000);
-    const sameDay = startTime.isSame(endTime, 'day');
+    let sameDay;
+    let startTime = moment(alert.effectiveStartDate * 1000);
+    let endTime = moment(alert.effectiveEndDate * 1000);
+    let expired;
+    if (endTime < 0) {
+      endTime = null;
+      startTime = null;
+      expired = false;
+    } else {
+      expired = startTime > currentTime || currentTime > endTime;
+      sameDay = startTime.isSame(endTime, 'day');
+      endTime = sameDay ? intl.formatTime(endTime) : upperFirst(endTime.calendar(currentTime));
+      startTime = upperFirst(startTime.calendar(currentTime));
+    }
+
+    const color = route.color ? `#${route.color}` : null;
+
 
     return (
       <RouteAlertsRow
         key={alert.id}
         routeMode={routeMode}
         routeLine={routeLine}
+        color={color}
         header={header}
         description={description}
-        endTime={sameDay ? intl.formatTime(endTime) : upperFirst(endTime.calendar(currentTime))}
-        startTime={upperFirst(startTime.calendar(currentTime))}
-        expired={startTime > currentTime || currentTime > endTime}
+        endTime={endTime}
+        startTime={startTime}
+        expired={expired}
       />);
   });
 };
@@ -106,6 +125,7 @@ export default Relay.createContainer(RouteAlertsContainerWithTime,
         fragment on Route {
           mode
           shortName
+          color
           alerts {
             id
             alertHeaderTextTranslations {
@@ -116,6 +136,7 @@ export default Relay.createContainer(RouteAlertsContainerWithTime,
               text
               language
             }
+            alertDescriptionText
             effectiveStartDate
             effectiveEndDate
           }

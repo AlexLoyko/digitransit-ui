@@ -53,7 +53,8 @@ const departureRowContainerFragment = () => Relay.QL`
 `;
 
 const hasActiveDisruption = (t, alerts) =>
-  filter(alerts, alert => alert.effectiveStartDate < t && t < alert.effectiveEndDate).length > 0;
+  filter(alerts, alert => (alert.effectiveStartDate < t && t < alert.effectiveEndDate)
+          || (alert.effectiveEndDate < 0)).length > 0;
 
 const DepartureRow = (props) => {
   const departure = props.departure;

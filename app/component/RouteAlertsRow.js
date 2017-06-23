@@ -12,15 +12,16 @@ export default function RouteAlertsRow({
   endTime,
   routeMode,
   routeLine,
+  color,
   expired,
 }) {
   return (
     <div className={cx('route-alert-row', { expired })}>
-      <RouteNumber mode={routeMode} text={routeLine} vertical />
+      <RouteNumber mode={routeMode} color={color} text={routeLine} vertical />
       <Icon img="icon-icon_caution" className="caution" />
       <div className="route-alert-contents">
         <div className="route-alert-duration">
-          {startTime} – {endTime}
+          {startTime && endTime ? `${startTime} – ${endTime}` : 'Now' }
         </div>
         <div className={cx('route-alert-header', routeMode)}>
           {header}
@@ -40,6 +41,7 @@ RouteAlertsRow.propTypes = {
   endTime: PropTypes.string.isRequired,
   routeMode: PropTypes.string.isRequired,
   routeLine: PropTypes.string.isRequired,
+  color: PropTypes.string,
   expired: PropTypes.bool.isRequired,
 };
 

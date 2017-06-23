@@ -3781,6 +3781,22 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "routes",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "OBJECT",
+                                "name": "Route",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "trip",
                         "description": null,
                         "args": [],

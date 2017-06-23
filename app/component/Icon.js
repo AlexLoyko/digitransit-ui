@@ -1,11 +1,11 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import cx from 'classnames';
 
 function Icon(props) {
   return (
     <span aria-hidden>
-      <svg id={props.id} style={{ fill: props.color ? props.color : null }} viewBox={props.viewBox} className={cx('icon', props.className)}>
+      <svg id={props.id} viewBox={props.viewBox} className={cx('icon', props.className)} style={{ fill: props.color ? props.color : null }} >
         <use xlinkHref={`#${props.img}`} />
       </svg>
     </span>
