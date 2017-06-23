@@ -26,7 +26,7 @@ function parseMessage(topic, message, actionContext) {
 
   const messageContents = {
     id,
-    route: `HSL:${line}`,
+    route: `MTA NYCT:${line}`,
     direction: parseInt(dir, 10) - 1,
     tripStartTime: startTime,
     operatingDay: parsedMessage.oday && parsedMessage.oday !== 'XXX' ? parsedMessage.oday :
