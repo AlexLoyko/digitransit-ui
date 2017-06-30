@@ -51,9 +51,8 @@ class RoutePage extends React.Component {
         }
       }
     }
-
+    console.log(shouldStartRealtimeClient);
     if (route[0].toLowerCase() === 'hsl' || shouldStartRealtimeClient) {
-
       this.context.executeAction(startRealTimeClient, {
         route: route[1],
       });
