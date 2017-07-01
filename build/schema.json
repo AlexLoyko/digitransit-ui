@@ -3804,18 +3804,6 @@
                         "description": null,
                         "args": [],
                         "type": {
-                            "kind": "OBJECT",
-                            "name": "Route",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "routes",
-                        "description": null,
-                        "args": [],
-                        "type": {
                             "kind": "LIST",
                             "name": null,
                             "ofType": {

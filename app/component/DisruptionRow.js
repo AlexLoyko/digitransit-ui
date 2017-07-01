@@ -10,7 +10,7 @@ function DisruptionRow({ routes, startTime, endTime, description, cause }) {
     <div className="row">
       <section className="grid-content">
         <div className="disruption-header disruption">
-          <RouteList className="left" routes={routes.filter(route => route)} />
+          <RouteList className="left" routes={routes} />
           <span className="time bold">
             {startTime.format('HH:mm')} - {endTime.format('HH:mm')}
           </span>

@@ -21,7 +21,7 @@ function DisruptionListContainer({ root }, { intl }) {
     const startTime = moment(alert.effectiveStartDate * 1000);
     const endTime = moment(alert.effectiveEndDate * 1000);
     const cause = 'because';
-    const routes = alert.routes;
+    const routes = alert.route;
     const translation = find(alert.alertDescriptionTextTranslations, ['language', intl.locale]);
 
     const description = translation ? translation.text : alert.alertDescriptionText;
@@ -70,7 +70,7 @@ const relayFragment = {
         }
         effectiveStartDate
         effectiveEndDate
-        routes {
+        route {
           shortName
           mode
         }
