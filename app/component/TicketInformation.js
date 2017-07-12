@@ -21,6 +21,7 @@ export default function TicketInformation({ fares }, { config }) {
 
   switch (regularFare.currency) {
     case 'EUR':
+    case 'USD': currency = '$'; break;
     default:
       currency = '€';
   }
@@ -30,10 +31,11 @@ export default function TicketInformation({ fares }, { config }) {
   const fareMapping = get(config, 'fareMapping', {});
 
   const mappedFareId = fareId ? fareMapping[fareId] : null;
+  const agencyId = fareId.split(':')[0].toLowerCase();
 
   return (
     <div className="row itinerary-ticket-information">
-      <div className="itinerary-ticket-layout-left"><Icon img="icon-icon_ticket" /></div>
+      <div className="itinerary-ticket-layout-left"><Icon img={`icon-farecard-${agencyId}`} viewBox="0 0 142.75629 90.285438" height="80" width="80" /></div>
       <div className="itinerary-ticket-layout-right">
         <div className="itinerary-ticket-type">
           <div className="ticket-type-zone">

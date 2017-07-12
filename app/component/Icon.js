@@ -3,6 +3,16 @@ import React from 'react';
 import cx from 'classnames';
 
 function Icon(props) {
+  if (props.img === 'icon-farecard-mta' || props.img === 'icon-farecard-mtasbwy' || props.img === 'icon-farecard-path') {
+    return (
+      <span aria-hidden>
+        <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
+          <use xlinkHref={`#${props.img}`} />
+        </svg>
+      </span>
+    );
+  }
+
   return (
     <span aria-hidden>
       <svg id={props.id} viewBox={props.viewBox} className={cx('icon', props.className)} style={{ fill: props.color ? props.color : null }} >
