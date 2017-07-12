@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cx from 'classnames';
 
-function Icon(props) {
-  if (props.img === 'icon-farecard-mta' || props.img === 'icon-farecard-mtasbwy' || props.img === 'icon-farecard-path') {
+function Icon(props, context) {
+  /*if (props.img === 'icon-farecard-mta' || props.img === 'icon-farecard-mtasbwy' || props.img === 'icon-farecard-path') {
     return (
       <span aria-hidden>
         <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
@@ -11,6 +11,31 @@ function Icon(props) {
         </svg>
       </span>
     );
+  }
+  */
+
+  let shouldUseFares = false;
+  if (context.config && context.config.farecard_agencies) {
+    shouldUseFares = true;
+  }
+
+  if (shouldUseFares) {
+    const fareAgencies = context.config.farecard_agencies;
+    for (var fareCard in fareAgencies) {
+    if (fareAgencies.hasOwnProperty(fareCard)) {
+        for (let i = 0; i < fareAgencies[fareCard].length; i += 1) {
+            if(`icon-farecard-${fareAgencies[fareCard][i].toLowerCase()}` === props.img) {
+              return (
+                <span aria-hidden>
+                  <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
+                    <use xlinkHref={`#icon-farecard-${fareCard.toLowerCase()}`} />
+                  </svg>
+                </span>
+              );
+            }
+        }
+    }
+}
   }
 
   return (
@@ -32,6 +57,10 @@ Icon.propTypes = {
 
 Icon.defaultProps = {
   viewBox: '0 0 40 40',
+};
+
+Icon.contextTypes = {
+  config: React.PropTypes.object,
 };
 
 Icon.asString = (img, className, id) => `
