@@ -2,15 +2,31 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cx from 'classnames';
 
-function Icon(props) {
-  if (props.img === 'icon-farecard-mta' || props.img === 'icon-farecard-mtasbwy' || props.img === 'icon-farecard-path') {
-    return (
-      <span aria-hidden>
-        <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
-          <use xlinkHref={`#${props.img}`} />
-        </svg>
-      </span>
-    );
+function Icon(props, context) {
+  let searchForFaresIcons = false;
+  if (context.config && context.config.showTicketInformation
+                     && context.config.feed_ids && context.config.agency_ids) {
+    searchForFaresIcons = true;
+  }
+
+  if (searchForFaresIcons) {
+    const feedIds = context.config.feed_ids;
+    const agencyIds = context.config.agency_ids;
+    for (let i = 0; i < feedIds.length; i += 1) {
+      if (agencyIds[feedIds[i]]) {
+        for (let j = 0; j < agencyIds[feedIds[i]].length; j += 1) {
+          if (props.img === `icon-farecard-${agencyIds[feedIds[i]][j].toLowerCase()}`) {
+            return (
+              <span aria-hidden>
+                <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
+                  <use xlinkHref={`#icon-farecard-${feedIds[i].toLowerCase()}`} />
+                </svg>
+              </span>
+            );
+          }
+        }
+      }
+    }
   }
 
   return (
@@ -28,6 +44,10 @@ Icon.propTypes = {
   color: React.PropTypes.string,
   className: React.PropTypes.string,
   img: React.PropTypes.string.isRequired,
+};
+
+Icon.contextTypes = {
+  config: React.PropTypes.object,
 };
 
 Icon.defaultProps = {
