@@ -3,16 +3,6 @@ import React from 'react';
 import cx from 'classnames';
 
 function Icon(props, context) {
-  /*if (props.img === 'icon-farecard-mta' || props.img === 'icon-farecard-mtasbwy' || props.img === 'icon-farecard-path') {
-    return (
-      <span aria-hidden>
-        <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
-          <use xlinkHref={`#${props.img}`} />
-        </svg>
-      </span>
-    );
-  }
-  */
 
   let shouldUseFares = false;
   if (context.config && context.config.farecard_agencies) {
@@ -22,9 +12,9 @@ function Icon(props, context) {
   if (shouldUseFares) {
     const fareAgencies = context.config.farecard_agencies;
     for (var fareCard in fareAgencies) {
-    if (fareAgencies.hasOwnProperty(fareCard)) {
+      if (fareAgencies.hasOwnProperty(fareCard)) {
         for (let i = 0; i < fareAgencies[fareCard].length; i += 1) {
-            if(`icon-farecard-${fareAgencies[fareCard][i].toLowerCase()}` === props.img) {
+            if (`icon-farecard-${fareAgencies[fareCard][i].toLowerCase()}` === props.img) {
               return (
                 <span aria-hidden>
                   <svg width="80" height="80" viewBox="0 0 142.75629 90.285438">
@@ -34,8 +24,8 @@ function Icon(props, context) {
               );
             }
         }
+      }
     }
-}
   }
 
   return (
