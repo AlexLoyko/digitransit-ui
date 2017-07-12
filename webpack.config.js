@@ -19,7 +19,7 @@ const fs = require('fs');
 require('babel-core/register')({
   presets: [['env', { targets: { node: 'current' } }], 'stage-2', 'react'],
   plugins: [
-    'transform-system-import-commonjs',
+    'dynamic-import-node',
     path.join(process.cwd(), 'build/babelRelayPlugin'),
   ],
   ignore: [
@@ -48,7 +48,7 @@ function getRulesConfig(env) {
             'stage-2',
           ],
           plugins: [
-            'transform-system-import-commonjs',
+            'transform-import-commonjs',
             path.join(__dirname, 'build/babelRelayPlugin'),
             ['transform-runtime', {
               helpers: true,
@@ -183,6 +183,8 @@ function getPluginsConfig(env) {
       new webpack.ContextReplacementPlugin(intlExpression, languageExpression),
       new webpack.ContextReplacementPlugin(themeExpression, selectedTheme),
       new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('development') } }),
+      new webpack.NamedChunksPlugin(),
+      new webpack.NamedModulesPlugin(),
       new webpack.LoaderOptionsPlugin({
         debug: true,
         options: {
@@ -214,10 +216,14 @@ function getPluginsConfig(env) {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       children: true,
-      async: true,
+      minChunks: 4,
     }),
-    new webpack.optimize.AggressiveMergingPlugin({ minSizeReduce: 1.2 }),
-    new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 30000 }),
+    new webpack.optimize.CommonsChunkPlugin({
+      children: true,
+      async: true,
+      minChunks: 2,
+    }),
+    new webpack.optimize.AggressiveMergingPlugin({ minSizeReduce: 1.5 }),
     new NameAllModulesPlugin(),
     new StatsPlugin('../stats.json', { chunkModules: true }),
     new webpack.optimize.UglifyJsPlugin({
@@ -243,7 +249,7 @@ function getPluginsConfig(env) {
     new OfflinePlugin({
       excludes: [
         '**/.*', '**/*.map', '../stats.json', '**/*.gz', '**/*.br',
-        'js/*_theme.*.js', 'js/*_sprite.*.js', 'iconstats-*.json',
+        'js/*_theme.*.js', 'js/*_sprite.*.js', 'iconstats-*.json', 'icons-*/*',
       ],
       // TODO: Can be enabled after cors headers have been added
       // externals: ['https://dev.hsl.fi/tmp/452925/86FC9FC158618AB68.css'],
@@ -253,7 +259,7 @@ function getPluginsConfig(env) {
           ':externals:',
           'js/+([a-z0-9]).js',
         ],
-        optional: ['*.png', 'css/*.css', '*.svg'],
+        optional: ['*.png', 'css/*.css', '*.svg', 'icons-*/*'],
       },
       externals: [/* '/' Can be re-added later when we want to cache index page */],
       safeToUseOptionalCaches: true,
