@@ -479,7 +479,7 @@ const translations = {
     'destination': 'Destination',
     'destination-placeholder': 'Enter destination, route or stop',
     'digitransit-platform': 'Digitransit service platform',
-    'disruption-info': 'Disruption info',
+    'disruption-info': 'Service Alerts',
     'disruption-info-no-alerts': 'No known disruptions or diversions.',
     'disruption-info-route-no-alerts': 'No known disruptions or diversions to the route.',
     'disruptions': 'Disruptions',

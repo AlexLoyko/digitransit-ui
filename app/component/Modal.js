@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cx from 'classnames';
 import Icon from './Icon';
+import ModeFilterContainer from './ModeFilterContainer';
 
 class Modal extends React.Component {
   static propTypes = {
@@ -45,13 +46,20 @@ class Modal extends React.Component {
           className={cx(modalClasses, isActive)}
           onClick={this.stopClickPropagation}
         >
-          <div className="row">
-            <h2 className="left">{this.props.title}
-            </h2>
-            <div className="small-1 columns right text-right modal-top-nav">
-              <a onClick={this.props.toggleVisibility} className="close-button cursor-pointer">
+            <div className="title-bar">
+              <h2 className="disruption-text">
+                {this.props.title}
+              </h2>
+              <div className="disruption-icon-holder">
+                <Icon id="disruption-icon" img="icon-icon_caution" />
+              </div>
+            <div className="closing-icon-holder">
+              <a onClick={this.props.toggleVisibility} className="cursor-pointer">
                 <Icon img="icon-icon_close" />
               </a>
+            </div>
+            <div >
+              <ModeFilterContainer />
             </div>
           </div>
           <div className="modal-wrapper">
@@ -59,7 +67,7 @@ class Modal extends React.Component {
               {this.props.children}
             </div>
           </div>
-        </div>
+       </div>
       </div>);
   }
 }

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { FormattedMessage, intlShape } from 'react-intl';
 import find from 'lodash/find';
 import DisruptionRow from './DisruptionRow';
+import ModeFilterContainer from './ModeFilterContainer';
 
 function DisruptionListContainer({ root }, { intl }) {
   if (!root || !root.alerts || root.alerts.length === 0) {
@@ -39,7 +40,11 @@ function DisruptionListContainer({ root }, { intl }) {
     );
   });
 
-  return <div>{alertElements}</div>;
+  return (
+    <div >
+      {alertElements}
+    </div>
+  );
 }
 
 DisruptionListContainer.contextTypes = {

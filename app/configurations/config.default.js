@@ -1,9 +1,11 @@
 const CONFIG = process.env.CONFIG || 'default';
-const API_URL = process.env.API_URL || 'https://planmytrip.nyc/api';
+const API_URL = process.env.API_URL || 'https://beta.planmytrip.nyc/api';
 const MAP_URL = process.env.MAP_URL || 'https://planmytrip.nyc/api';
 const APP_PATH = process.env.APP_PATH || '';
+const APP_URL = process.env.APP_URL || 'https://planmytrip.nyc/';
 const APP_DESCRIPTION = 'MTA All Agency App Trip Planner BETA';
 const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000;
+const MQTT_URL = APP_URL.replace("https", "wss").replace("http", "ws");
 
 export default {
   CONFIG,
@@ -18,19 +20,46 @@ export default {
            default: `${API_URL}/map/v1/`,
     },
     PELIAS: `${API_URL}/geocoding/v1/search`,
+    //PELIAS: `http://54.174.242.186:8080/v1/search`,
     PELIAS_REVERSE_GEOCODER: `${API_URL}/geocoding/v1/reverse`,
-    //STOP_MAP: `${MAP_URL}/stopmap/v1/`,
-    STOP_MAP: `http://localhost:9001/hsl-stop-map/`,
-    MQTT: 'ws://mqtt.aaa.mtabuscis.net:9001',
-    REALTIME: 'http://liveq.aaa.mtabuscis.net/vehiclePositions'
+    //PELIAS_REVERSE_GEOCODER: `http://54.174.242.186:8080/v1/reverse`,
+    STOP_MAP: `${MAP_URL}/stopmap/v1/`,
+    //STOP_MAP: `http://localhost:9001/hsl-stop-map/`,
+    MQTT: `${MQTT_URL}/wsapp/`,
+    REALTIME: `${API_URL}/mtaBusLoc/vehiclePositions`
   },
 
   APP_PATH: `${APP_PATH}`,
   title: 'MTA Trip Planner',
   shouldShowIntro: false,
-  feed_id: ['MTA','NJT','NJB'],
+  feedIds: ['MTA','NJT','NJB', "MTA NYCT", "MTABC"],
+  //feedIds: [''],
+  feed_ids: ['MTA','NJT','NJB', "MTA NYCT", "MTABC"],
 
-  searchSources: ['oa', 'osm', 'nlsfi'],
+  // farecard icon names for a list of agencies
+  fare_agencies: {
+    METROCARD: ['MTA', 'MTABC', 'MTASBWY', 'PATH'],
+  },
+
+  searchSources: ['oa', 'osm', 'geonames', 'gtfs'],
+
+  // search: {
+  //    suggestions: {
+  //     useTransportIcons: true,
+  //   },
+  //   usePeliasStops: false,
+  //   mapPeliasModality: true,
+  //    peliasMapping: { },
+  //    peliasLayer: null,
+  //   peliasLocalization: null,
+  //   peliasLocalization: (feature) => {
+  //     // localization example; showing locality (county) in label and name
+  //     const localized = { ...feature };
+  //     localized.properties.label = '';
+  //     localized.properties.name = '';
+  //     return localized;
+  //   },
+  // },
 
   contactName: {
     default: "MTA Trip Planner",
@@ -42,16 +71,16 @@ export default {
 
   searchParams: {},
 
-  search: {
-    suggestions: {
-      useTransportIcons: false,
-    },
-    usePeliasStops: false,
-    mapPeliasModality: false,
-    peliasMapping: { },
-    peliasLayer: null,
-    peliasLocalization: null,
-  },
+ search: {
+   suggestions: {
+     useTransportIcons: false,
+   },
+   usePeliasStops: false,
+   mapPeliasModality: false,
+   peliasMapping: { },
+   peliasLayer: null,
+   peliasLocalization: null,
+ },
 
   nearbyRoutes: {
     radius: 2000,
@@ -223,7 +252,7 @@ export default {
   }
 ,
   // Ticket information feature toggle
-  showTicketInformation: false,
+  showTicketInformation: true,
   showRouteInformation: false,
 
   modeToOTP: {

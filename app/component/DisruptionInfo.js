@@ -32,7 +32,7 @@ function DisruptionInfo(props, context) {
       <Modal
         open
         title={
-          <FormattedMessage id="disruption-info" defaultMessage="Disruption info" />}
+          <FormattedMessage id="disruption-info" defaultMessage="Alerts" />}
         toggleVisibility={toggleVisibility}
       >
         <Relay.RootContainer

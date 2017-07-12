@@ -4,6 +4,7 @@ import cx from 'classnames';
 import NearbyTabLabel from './NearbyTabLabel';
 import FavouritesTabLabelContainer from './FavouritesTabLabelContainer';
 import ComponentUsageExample from './ComponentUsageExample';
+import ModeFilter from './ModeFilter';
 
 const FrontPagePanelLarge = ({ selectedPanel, nearbyClicked,
    favouritesClicked, children }) => {
@@ -17,22 +18,25 @@ const FrontPagePanelLarge = ({ selectedPanel, nearbyClicked,
     favouritesClasses.push('selected');
   }
 
+  console.log(children);
+
   return (
-    <div className={'fpcfloat no-select'}>
-      <ul className="tabs-row bp-large cursor-pointer">
-        <NearbyTabLabel
-          classes={cx(tabClasses, nearbyClasses)}
-          onClick={nearbyClicked}
-        />
-        <FavouritesTabLabelContainer
-          classes={cx(tabClasses, favouritesClasses)}
-          onClick={favouritesClicked}
-        />
-      </ul>
-      {children}
-    </div>
+     <div className={'fpcfloat no-select'}>
+       <ul className="tabs-row bp-large cursor-pointer">
+         <NearbyTabLabel
+           classes={cx(tabClasses, nearbyClasses)}
+           onClick={nearbyClicked}
+         />
+         <FavouritesTabLabelContainer
+           classes={cx(tabClasses, favouritesClasses)}
+           onClick={favouritesClicked}
+         />
+       </ul>
+       {children}
+     </div>
   );
 };
+
 
 const noop = () => {};
 
