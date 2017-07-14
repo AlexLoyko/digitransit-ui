@@ -1,5 +1,5 @@
 .disruption {
-  background-color: rgba($disruption-color, 0.5) !important;
+  background-color: lightsteelblue !important;
   padding: 8px 12px;
   margin: 5px 0;
   border-radius: $border-radius;
@@ -19,10 +19,16 @@
 }
 
 .disruption-header  {
+  width: auto;
   .route-list div {
     font-family: $font-family;
     font-weight: $font-weight-medium;
     line-height: 1.5;
+
+    .icon {
+      width: 1.5em;
+      height: 1.5em;
+    }
   }
   .vehicle-number {
     &:before  {
@@ -44,3 +50,76 @@
   width: 2em;
   fill: $disruption-color;
 }
+
+/* ALEX PART*/
+.data-closable-disruptions {
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  margin: -10px -22px;
+  padding: 10px;
+  background: #eef1f3;
+
+  .disruption-content {
+    border-radius: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #fff;
+  }
+
+}
+
+.title-bar {
+    display: inline-block;
+    width: 100%;
+    border-radius: 4px;
+    padding: 5px;
+    background: darken($secondary-color,2%);
+    text-align: center;
+}
+.disruption-text {
+    display: inline-block;
+    vertical-align: middle;
+    color: white;
+}
+.disruption-icon-holder {
+    display: inline-block;
+    vertical-align: middle;
+    width: 10%;
+    height: 100%;
+
+    .icon {
+      width: 30px;
+      height: 30px;
+    }
+}
+.closing-icon-holder {
+    display: inline-block;
+    float: right;
+
+    .icon {
+      fill: white;
+      &:hover {
+        fill: lightgray;
+      }
+    }
+}
+
+.mode-filter-container {
+  height: 43px;
+
+  .icon {
+      width: 24px;
+      height: 24px;
+  }
+}
+
+
+
+
+#disruption-icon {
+    fill: red;
+    color: white;
+}
+
+/* */

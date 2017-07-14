@@ -3,11 +3,13 @@ import React from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
 import { FormattedMessage, intlShape } from 'react-intl';
+import connectToStores from 'fluxible-addons-react/connectToStores';
 import find from 'lodash/find';
 import DisruptionRow from './DisruptionRow';
 import ModeFilterContainer from './ModeFilterContainer';
 
-function DisruptionListContainer({ root }, { intl }) {
+function DisruptionListContainer({ root }, { intl }, props) {
+
   if (!root || !root.alerts || root.alerts.length === 0) {
     return (
       <FormattedMessage
@@ -46,7 +48,6 @@ function DisruptionListContainer({ root }, { intl }) {
     </div>
   );
 }
-
 DisruptionListContainer.contextTypes = {
   intl: intlShape,
 };
@@ -55,12 +56,13 @@ DisruptionListContainer.propTypes = {
   root: PropTypes.shape({
     alerts: PropTypes.array,
   }).isRequired,
+  selectedModes: PropTypes.array.isRequired,
 };
 
 const relayFragment = {
   root: () => Relay.QL`
     fragment on QueryType {
-      alerts(feeds:$feedIds) {
+      alerts(modes: $modes) {
         id
         feed
         alertHeaderText
@@ -86,5 +88,5 @@ const relayFragment = {
 
 export default Relay.createContainer(DisruptionListContainer, {
   fragments: relayFragment,
-  initialVariables: { feedIds: null },
+  initialVariables: { modes: null },
 });

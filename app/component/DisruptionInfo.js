@@ -3,6 +3,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { FormattedMessage } from 'react-intl';
 import { routerShape, locationShape } from 'react-router';
+import connectToStores from 'fluxible-addons-react/connectToStores';
 
 import Modal from './Modal';
 import Loading from './Loading';
@@ -10,7 +11,9 @@ import DisruptionListContainer from './DisruptionListContainer';
 import ComponentUsageExample from './ComponentUsageExample';
 import { isBrowser } from '../util/browser';
 
+
 function DisruptionInfo(props, context) {
+  const selectedModes = props.selectedModes.join();
   const isOpen = () => (context.location.state ? context.location.state.disruptionInfoOpen : false);
 
   const toggleVisibility = () => {
@@ -41,15 +44,15 @@ function DisruptionInfo(props, context) {
           route={{
             name: 'ViewerRoute',
             queries: {
-              root: (Component, { feedIds }) => Relay.QL`
+              root: (Component, { modes }) => Relay.QL`
                 query {
                   viewer {
-                    ${Component.getFragment('root', { feedIds })}
+                    ${Component.getFragment('root', { modes })}
                   }
                 }
              `,
             },
-            params: { feedIds: context.config.feedIds },
+            params: { modes: selectedModes },
           }}
           renderLoading={() => <Loading />}
         />
@@ -58,6 +61,9 @@ function DisruptionInfo(props, context) {
   return <div />;
 }
 
+DisruptionInfo.propTypes = {
+  selectedModes: PropTypes.array.isRequired,
+};
 
 DisruptionInfo.contextTypes = {
   router: routerShape.isRequired,
@@ -78,5 +84,9 @@ DisruptionInfo.description = () =>
       <DisruptionInfo />
     </ComponentUsageExample>
   </div>;
+
+DisruptionInfo = connectToStores(DisruptionInfo, ['ModeStore'], (context, props) => ({
+  selectedModes: context.getStore('ModeStore').getMode(),
+}));
 
 export default DisruptionInfo;

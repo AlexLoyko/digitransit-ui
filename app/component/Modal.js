@@ -46,6 +46,9 @@ class Modal extends React.Component {
           className={cx(modalClasses, isActive)}
           onClick={this.stopClickPropagation}
         >
+          <div
+            className="data-closable-disruptions"
+          >
             <div className="title-bar">
               <h2 className="disruption-text">
                 {this.props.title}
@@ -53,21 +56,27 @@ class Modal extends React.Component {
               <div className="disruption-icon-holder">
                 <Icon id="disruption-icon" img="icon-icon_caution" />
               </div>
-            <div className="closing-icon-holder">
-              <a onClick={this.props.toggleVisibility} className="cursor-pointer">
-                <Icon img="icon-icon_close" />
-              </a>
+              <div className="closing-icon-holder">
+                <a onClick={this.props.toggleVisibility} className="cursor-pointer">
+                  <Icon img="icon-icon_close" />
+                </a>
+              </div>
+              <div className="mode-filter-container">
+              <div className="row border-bottom">
+                <div className="small-12 column">
+                  <ModeFilterContainer />
+                </div>
+              </div>
+              </div>
             </div>
-            <div >
-              <ModeFilterContainer />
+
+            <div className="modal-wrapper">
+              <div className="modal-content momentum-scroll">
+                {this.props.children}
+              </div>
             </div>
           </div>
-          <div className="modal-wrapper">
-            <div className="modal-content momentum-scroll">
-              {this.props.children}
-            </div>
-          </div>
-       </div>
+        </div>
       </div>);
   }
 }

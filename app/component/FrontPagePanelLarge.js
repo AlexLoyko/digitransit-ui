@@ -18,8 +18,6 @@ const FrontPagePanelLarge = ({ selectedPanel, nearbyClicked,
     favouritesClasses.push('selected');
   }
 
-  console.log(children);
-
   return (
      <div className={'fpcfloat no-select'}>
        <ul className="tabs-row bp-large cursor-pointer">
