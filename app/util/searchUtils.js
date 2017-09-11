@@ -141,7 +141,19 @@ export function getGeocodingResult(text, searchParams, lang, focusPoint, sources
     return Promise.resolve([]);
   }
 
-  const opts = { text, ...searchParams, ...focusPoint, lang, sources };
+  //const opts = { text, ...searchParams, ...focusPoint, lang, sources };
+  //const opts = {text};
+  let opts;
+  let textWords = text.split(' ');
+
+  for (let i = 0; i < textWords.length; i++) {
+    if (textWords[i] === '&' || textWords[i] === 'and') {
+      opts = { text };
+    } else {
+      opts = { text, ...searchParams, ...focusPoint, lang };
+    }
+  }
+
 
   return getJson(config.URL.PELIAS, opts)
     .then(res => orderBy(res.features, feature => feature.properties.confidence, 'desc'))

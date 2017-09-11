@@ -43,9 +43,9 @@ class RoutePage extends React.Component {
 
     let shouldStartRealtimeClient = false;
 
-    if (config.feed_id) {
-      for (let i = 0; i < config.feed_id.length; i++) {
-        if (route[0].toLowerCase() === config.feed_id[i].toLowerCase()) {
+    if (config.feed_ids) {
+      for (let i = 0; i < config.feed_ids.length; i++) {
+        if (route[0].toLowerCase() === config.feed_ids[i].toLowerCase()) {
           shouldStartRealtimeClient = true;
           break;
         }
