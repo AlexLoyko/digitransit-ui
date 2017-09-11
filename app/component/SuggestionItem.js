@@ -27,7 +27,6 @@ const SuggestionItem = pure(({ item, useTransportIcons, doNotShowLinkToStop }) =
       />
     );
   }
-
   const label = getLabel(item.properties, false);
 
   const ri = (

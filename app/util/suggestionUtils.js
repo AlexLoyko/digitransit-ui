@@ -61,21 +61,14 @@ export const getLabel = memoize((suggestion, plain = false) => {
       ), suggestion.longName] : [suggestion.longName, null];
     case 'venue':
     case 'address':
+    case 'favouriteStop':
+    case 'stop':
+    case 'station':
+    case 'intersection':
       return [
         suggestion.name,
         suggestion.label.replace(new RegExp(`${escapeRegExp(suggestion.name)}(,)?( )?`), ''),
       ];
-
-    case 'favouriteStop':
-    case 'stop':
-      return (plain) ?
-        [suggestion.name || suggestion.label, getLocality(suggestion)] : [suggestion.name, (
-          <span key={suggestion.id}>
-            {getStopCode(suggestion) && <StopCode code={getStopCode(suggestion)} />}
-            {suggestion.desc}
-          </span>
-        )];
-    case 'station':
     default:
       return [suggestion.name || suggestion.label, getLocality(suggestion)];
   }
