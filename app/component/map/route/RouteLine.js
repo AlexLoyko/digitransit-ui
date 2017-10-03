@@ -8,10 +8,12 @@ import LocationMarker from '../LocationMarker';
 import Line from '../Line';
 
 import { isBrowser } from '../../../util/browser';
+var util = require('util')
 
 class RouteLine extends React.Component {
   static propTypes = {
     pattern: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired,
     thin: PropTypes.bool,
     filteredStops: PropTypes.array,
   }
@@ -60,13 +62,20 @@ class RouteLine extends React.Component {
         ))
       : false;
 
+    const geometry = [];
+    this.props.pattern.route.patterns.forEach((pattern) => {
+      if (pattern.geometry != null) {
+        geometry.push(pattern.geometry);
+      }
+    });
+
     return (
       <div style={{ display: 'none' }}>
         {objs}
         <Line
           key="line"
           color={this.props.pattern.route.color ? `#${this.props.pattern.route.color}` : null}
-          geometry={this.props.pattern.geometry || this.props.pattern.stops}
+          geometry={geometry || this.props.pattern.stops}
           mode={modeClass}
           thin={this.props.thin}
         />
@@ -87,6 +96,12 @@ export default Relay.createContainer(RouteLine, {
         route {
           mode
           color
+          patterns {
+            geometry {
+              lat
+              lon
+            }
+          }
         }
         stops {
           lat

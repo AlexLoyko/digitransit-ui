@@ -49,12 +49,7 @@ export default class Line extends React.Component {
   render() {
     const className = cx([this.props.mode, { thin: this.props.thin }]);
 
-    let filteredPoints;
-    if (this.props.geometry) {
-      filteredPoints =
-        this.props.geometry.filter(point => point.lat !== null && point.lon !== null);
-    }
-
+    const lines = [];
     const lineConfig = this.context.config.map.line;
     let haloWeight = this.props.thin ? lineConfig.halo.thinWeight : lineConfig.halo.weight;
     let legWeight = this.props.thin ? lineConfig.leg.thinWeight : lineConfig.leg.weight;
@@ -64,25 +59,37 @@ export default class Line extends React.Component {
       legWeight *= 0.5;
     }
 
+    for (let i = 0; i < this.props.geometry.length; i++) {
+      let filteredPoints;
+
+      filteredPoints = this.props.geometry.filter(point => point.lat !== null && point.lon !== null);
+
+      lines.push(
+          <Polyline
+            key="halo"
+            ref={(el) => { this.halo = el; }}
+            positions={filteredPoints}
+            className={`leg-halo ${className}`}
+            weight={haloWeight}
+            interactive={false}
+          />
+        );
+      lines.push(
+          <Polyline
+            key="line"
+            ref={(el) => { this.line = el; }}
+            positions={filteredPoints}
+            className={`leg ${className}`}
+            color={this.props.color ? this.props.color : 'currentColor'}
+            weight={legWeight}
+            interactive={false}
+          />
+        );
+    }
+
     return (
       <div style={{ display: 'none' }}>
-        <Polyline
-          key="halo"
-          ref={(el) => { this.halo = el; }}
-          positions={filteredPoints}
-          className={`leg-halo ${className}`}
-          weight={haloWeight}
-          interactive={false}
-        />
-        <Polyline
-          key="line"
-          ref={(el) => { this.line = el; }}
-          positions={filteredPoints}
-          className={`leg ${className}`}
-          color={this.props.color ? this.props.color : 'currentColor'}
-          weight={legWeight}
-          interactive={false}
-        />
+        { lines }
       </div>
     );
   }
