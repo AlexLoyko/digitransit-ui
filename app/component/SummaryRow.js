@@ -15,6 +15,7 @@ import RelativeDuration from './RelativeDuration';
 import ComponentUsageExample from './ComponentUsageExample';
 import { isCallAgencyPickupType } from '../util/legUtils';
 
+
 const Leg = ({ routeNumber, leg, large }) => (
   <div className="leg">
     { large &&
@@ -156,6 +157,7 @@ const SummaryRow = (props, { intl, intl: { formatMessage }, config }) => {
   });
 
   let firstLegStartTime = null;
+  let futureTimes = null;
 
   if (!noTransitLegs) {
     let firstDeparture = false;
@@ -167,10 +169,19 @@ const SummaryRow = (props, { intl, intl: { formatMessage }, config }) => {
     }
     if (firstDeparture) {
       firstLegStartTime = (
-        <div className={cx('itinerary-first-leg-start-time', { realtime: realTimeAvailable })}>
+        <div className={cx({ realtime: realTimeAvailable })}>
           {realTimeAvailable && <Icon img="icon-icon_realtime" className="realtime-icon realtime" />}
-          {moment(firstDeparture).format('HH:mm')}
+          {moment(firstDeparture).format('hh:mm a')}
         </div>);
+    }
+
+    if (props.futureTimes && props.futureTimes.length > 0) {
+        futureTimes = props.futureTimes.map((futureTime, i) =>
+            (<div style={{ display: 'inline-block' }} className={cx({ realtime: realTimeAvailable })}>
+                {realTimeAvailable && <Icon img="icon-icon_realtime" className="realtime-icon realtime" />}
+                {futureTime}
+                {(props.futureTimes.length > 1 && i < props.futureTimes.length - 1) ? ', ' : null}
+            </div>));
     }
   }
 
@@ -184,76 +195,80 @@ const SummaryRow = (props, { intl, intl: { formatMessage }, config }) => {
   const itineraryLabel = formatMessage({ id: 'itinerary-page.title', defaultMessage: 'Itinerary' });
 
   return (
-    <div
-      className={classes}
-      onClick={() => props.onSelect(props.hash)}
-    >
-      <div className="itinerary-duration-and-distance">
-        <span className="itinerary-duration">
-          <RelativeDuration duration={duration} />
-        </span>
-        <div className="itinerary-walking-distance">
-          <Icon img="icon-icon_walk" viewBox="6 0 40 40" />
-          {displayDistance(data.walkDistance, config)}
-        </div>
-      </div>
-      {props.open || props.children ? [
-        <div className="flex-grow itinerary-heading" key="title">
-          <FormattedMessage
-            id="itinerary-page.title"
-            defaultMessage="Itinerary"
-            tagName="h2"
-          />
-        </div>,
-        <button
-          title={itineraryLabel}
-          key="arrow"
-          className="action-arrow-click-area noborder flex-vertical"
-          onClick={(e) => {
-            e.stopPropagation();
-            props.onSelectImmediately(props.hash);
-          }}
-        >
-          <div className="action-arrow flex-grow">
-            <Icon img="icon-icon_arrow-collapse--right" />
-          </div>
-        </button>,
-        props.children &&
-          React.cloneElement(React.Children.only(props.children), { searchTime: props.refTime }),
-      ] : [
-        <div
-          className="itinerary-start-time"
-          key="startTime"
-        >
-          <span className={cx('itinerary-start-date', { nobg: sameDay(startTime, refTime) })} >
-            <span>
-              {dateOrEmpty(startTime, refTime)}
-            </span>
+      <div
+        className={classes}
+        onClick={() => props.onSelect(props.hash)}
+      >
+        <div className="itinerary-duration-and-distance">
+          <span className="itinerary-duration">
+            <RelativeDuration duration={duration} />
           </span>
-          {startTime.format('HH:mm')}
-          {firstLegStartTime}
-        </div>,
-        <div className="itinerary-legs" key="legs">
-          {legs}
-        </div>,
-        <div className="itinerary-end-time" key="endtime">
-          {endTime.format('HH:mm')}
-        </div>,
-        <button
-          title={itineraryLabel}
-          key="arrow"
-          className="action-arrow-click-area flex-vertical noborder"
-          onClick={(e) => {
-            e.stopPropagation();
-            props.onSelectImmediately(props.hash);
-          }}
-        >
-          <div className="action-arrow flex-grow">
-            <Icon img="icon-icon_arrow-collapse--right" />
+          <div className="itinerary-walking-distance">
+            <Icon img="icon-icon_walk" viewBox="6 0 40 40" />
+            {displayDistance(data.walkDistance, config)}
           </div>
-        </button>,
-      ]}
-    </div>);
+        </div>
+        {props.open || props.children ? [
+          <div className="flex-grow itinerary-heading" key="title">
+            <FormattedMessage
+              id="itinerary-page.title"
+              defaultMessage="Itinerary"
+              tagName="h2"
+            />
+          </div>,
+          <button
+            title={itineraryLabel}
+            key="arrow"
+            className="action-arrow-click-area noborder flex-vertical"
+            onClick={(e) => {
+              e.stopPropagation();
+              props.onSelectImmediately(props.hash);
+            }}
+          >
+            <div className="action-arrow flex-grow">
+              <Icon img="icon-icon_arrow-collapse--right" />
+            </div>
+          </button>,
+          props.children &&
+            React.cloneElement(React.Children.only(props.children), { searchTime: props.refTime }),
+        ] : [
+          <div
+            className="itinerary-start-time"
+            key="startTime"
+          >
+            <span className={cx('itinerary-start-date', { nobg: sameDay(startTime, refTime) })} >
+              <span>
+                {dateOrEmpty(startTime, refTime)}
+              </span>
+            </span>
+            {firstLegStartTime}
+          </div>,
+          <div className="itinerary-legs" key="legs">
+            {legs}
+          </div>,
+          <div className="itinerary-end-time" key="endtime">
+            {endTime.format('hh:mm a')}
+          </div>,
+          <button
+            title={itineraryLabel}
+            key="arrow"
+            className="action-arrow-click-area flex-vertical noborder"
+            onClick={(e) => {
+              e.stopPropagation();
+              props.onSelectImmediately(props.hash);
+            }}
+          >
+            <div className="action-arrow flex-grow">
+              <Icon img="icon-icon_arrow-collapse--right" />
+            </div>
+          </button>,
+          <div style={{ flexBasis: '100%' }}>
+              { props.futureTimes && 'Next trips: '}
+              {futureTimes}
+          </div>
+        ]}
+      </div>
+  );
 };
 
 
@@ -268,6 +283,7 @@ SummaryRow.propTypes = {
   open: PropTypes.bool,
   breakpoint: PropTypes.string.isRequired,
   intermediatePlaces: PropTypes.array,
+  futureTimes: PropTypes.array,
 };
 
 SummaryRow.contextTypes = {

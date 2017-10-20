@@ -9,6 +9,7 @@
   border-bottom: 1px solid $light-gray;
   border-left: 0.3em $action-color solid;
   display: flex;
+  flex-wrap: wrap;
   //align-items: center;
   user-select: none;
   $distance-gray: #999999;
@@ -114,7 +115,6 @@
 
   .itinerary-end-time {
     padding-left: 10px;
-    width: 3em;
     margin-top: $padding-small;
   }
 
