@@ -411,11 +411,7 @@ export default {
 
   footer: {
     content: [
-<<<<<<< HEAD
       { label: (function () { return `© MTA/HSL, Copyright ${(1900 + new Date().getYear())}`; }()) },
-=======
-      { label: `© HSL, Liikennevirasto ${YEAR}` },
->>>>>>> 82aa734e9f204f5752117260948cb40556f319c8
       {},
       { name: 'footer-feedback', nameEn: 'Submit feedback', href: 'https://github.com/HSLdevcom/digitransit-ui/issues', icon: 'icon-icon_speech-bubble' },
     ],
@@ -449,21 +445,7 @@ export default {
   },
 
   themeMap: {
-<<<<<<< HEAD
     default: 'default',
-=======
-    turku: 'turku',
-    hsl: 'reittiopas',
-    lappeenranta: 'lappeenranta',
-    joensuu: 'joensuu',
-    oulu: 'oulu',
-    hameenlinna: 'hameenlinna',
-    matka: 'matka',
-    kotka: 'kotka',
-    jyvaskyla: 'jyvaskyla',
-    lahti: 'lahti',
-    kuopio: 'kuopio',
->>>>>>> 82aa734e9f204f5752117260948cb40556f319c8
   },
 
   staticMessages: [],
