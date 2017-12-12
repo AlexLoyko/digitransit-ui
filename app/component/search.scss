@@ -22,6 +22,29 @@ $search-form-location-icon-size: 18px;
 $search-header-height: 45px;
 $item-border-color: #eee;
 
+.selected-stops {
+   z-index: 1001;
+   line-height: 25px;
+   margin: 10px 20px;
+   padding-left: 10px;
+   padding-right: 3px;
+   width: fit-content;
+   border-radius: 4px;
+   background-color: aliceblue;
+
+   .icon {
+     transition: all 0.5s;
+     vertical-align: middle;
+     padding: 3px;
+     fill: palevioletred;
+     margin-bottom: 3px;
+
+     &:hover {
+       padding: 2px;
+     }
+   }
+}
+
 .search-form {
   top: 0;
   padding-top: 10px;
@@ -203,10 +226,81 @@ $item-border-color: #eee;
   }
 }
 
+.stop-search-bar {
+  padding-left: 20px;
+  padding-right: 20px;
+
+  ul.react-autowhatever__items-list {
+    z-index: 300;
+    position: fixed;
+    @extend .momentum-scroll;
+    list-style-type: none;
+    background: $white;
+    border: none;
+    border-style: none;
+    padding: 4px 0px;
+    width: 560px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 0px;
+
+    li {
+      height: 40px;
+      border-left: 30px solid white;
+      white-space: nowrap;
+      overflow: hidden;
+      line-height: 40px;
+      &:hover {
+        background-color: #b0c4de;
+        border-left: 30px solid #b0c4de;
+      }
+
+      &:not(:last-child) {
+        border-bottom: none;
+      }
+    }
+  }
+
+  input {
+    height: 40px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding-left: 20px;
+    font-size: 18px;
+  }
+
+  &.open {
+    input {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: none;
+    }
+
+    .react-autowhatever__input {
+      margin: 0;
+    }
+
+    ul.react-autowhatever__items-list {
+      border: 1px solid #808080;
+      border-radius: 5px;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+}
+.stop-search-bar__open {
+
+}
+
 .react-autowhatever__items-container {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+}
+
+.stop-search-item {
+  color: red;
+  font-size: 18px;
 }
 
 
@@ -488,11 +582,11 @@ ul.react-autowhatever__items-list {
 
 .search-modal-overlay {
   height: 100%;
-  width: 100%;
+  width: 600px;
   top: 0px;
   left: 0px;
   position: fixed;
-  z-index: 1100;
+  z-index: 801;
   background: rgba(0, 0, 0, 0.541176);
 }
 

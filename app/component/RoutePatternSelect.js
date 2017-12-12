@@ -3,6 +3,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import cx from 'classnames';
 import _ from 'lodash';
+import connectToStores from 'fluxible-addons-react/connectToStores';
 import Icon from './Icon';
 import ComponentUsageExample from './ComponentUsageExample';
 import { routePatterns as exampleRoutePatterns } from './ExampleData';
@@ -22,19 +23,31 @@ function convertDate(date) {
 
 date = convertDate(date);
 
+function doesPatternContainSelectedStops(pattern, selectedStops) {
+  let matchedStops = new Set();
+  pattern.tripsForDate[0].stops.forEach((stop) => {
+    selectedStops.forEach((selectedStop) => {
+      if (stop.name === selectedStop) {
+        matchedStops.add(selectedStop);
+      }
+    });
+  });
+
+  if (selectedStops.length === 0 || matchedStops.size === selectedStops.length) {
+    return true;
+  }
+
+  return false;
+}
+
 
 function RoutePatternSelect(props) {
-  // const options = props.route && props.route.patterns.map(pattern =>
-  //   (<option key={pattern.code} value={pattern.code}>
-  //     {pattern.stops[0].name} ➔ {pattern.trips.tripsForDate.tripHeadsign}
-  //   </option>));
-
-  let used = [];
-  let options = [];
+  const used = [];
+  const options = [];
   const mostPopPatterns = {};
 
   for (let i = 0; i < props.route.patterns.length; i++) {
-    let tripsOnThisPattern = props.route.patterns[i].tripsForDate;
+    const tripsOnThisPattern = props.route.patterns[i].tripsForDate;
     if (tripsOnThisPattern && tripsOnThisPattern.length > 0) {
       if (!_.includes(used, { headsign: tripsOnThisPattern[0].tripHeadsign, firstStop: tripsOnThisPattern[0].stops[0].name })) {
         used.push({
@@ -47,7 +60,7 @@ function RoutePatternSelect(props) {
   }
 
   for (var headsign in mostPopPatterns) {
-    if (mostPopPatterns.hasOwnProperty(headsign)) {
+    if (mostPopPatterns.hasOwnProperty(headsign) && doesPatternContainSelectedStops(mostPopPatterns[headsign], props.selectedStops)) {
       options.push(
         <option key={mostPopPatterns[headsign].code} value={mostPopPatterns[headsign].code}>
           {mostPopPatterns[headsign].tripsForDate[0].stops[0].name} ➔ {headsign}
@@ -72,6 +85,10 @@ RoutePatternSelect.propTypes = {
   onSelectChange: PropTypes.func.isRequired,
 };
 
+RoutePatternSelect.contextTypes = {
+  getStore: PropTypes.func.isRequired,
+};
+
 RoutePatternSelect.description = () =>
   <div>
     <p>
@@ -85,7 +102,9 @@ RoutePatternSelect.description = () =>
     </ComponentUsageExample>
   </div>;
 
-export default Relay.createContainer(RoutePatternSelect, {
+export default Relay.createContainer(connectToStores(RoutePatternSelect, ['StopVsPatternSearchStore'], context => ({
+  selectedStops: context.getStore('StopVsPatternSearchStore').getFilterStopList(),
+})), {
   initialVariables: {
     date,
   },

@@ -16,6 +16,7 @@ function createSummaryRowEntry(itinerary, i) {
 
 function ItinerarySummaryListContainer(props) {
   if (props.itineraries && props.itineraries.length > 0) {
+    props.itineraries.sort(function(a, b) { return moment(a.endTime).diff(moment(a.startTime)) - moment(b.endTime).diff(moment(b.startTime)); });
     const open = props.open && Number(props.open);
     const uniqueSummaries = {};
 
@@ -23,7 +24,6 @@ function ItinerarySummaryListContainer(props) {
 
     // check if has at least one transit leg and get a route by route sequence per this itinerary
     props.itineraries.forEach((itinerary, i) => {
-      let noTransitLegs = true;
       let firstTransitLegIndex;
 
       /*
@@ -33,8 +33,7 @@ function ItinerarySummaryListContainer(props) {
        */
       const currRoutes = itinerary.legs.map((leg, j) => {
         if (leg.transitLeg) {
-            noTransitLegs = false;
-            firstTransitLegIndex = j;
+          firstTransitLegIndex = j;
         }
         if (leg.route && leg.route.shortName) {
           return leg.route.shortName;
@@ -48,7 +47,6 @@ function ItinerarySummaryListContainer(props) {
       // iterate over every field of uniqueSummaries and check if itinerary with same 'route sequence' already saved
       for (var property in uniqueSummaries) {
         if (uniqueSummaries.hasOwnProperty(property)) {
-
           // once found a matching saved itinerary, if time is reasonable, add it to object's futureTimes
           if (_.isEqual(uniqueSummaries[property], currRoutes)) {
             found = true;
@@ -62,6 +60,7 @@ function ItinerarySummaryListContainer(props) {
               originalEntry.futureTimes = [];
             }
             uniqueSummaries[property].futureTimes = [...uniqueSummaries[property].futureTimes, `${moment(itinerary.legs[firstTransitLegIndex].startTime).format('hh:mm a')}`];
+            uniqueSummaries[property].futureTimes = uniqueSummaries[property].futureTimes.sort((a, b) => moment(a, 'hh:mm a').unix() - moment(b, 'hh:mm a').unix());
           }
         }
       }

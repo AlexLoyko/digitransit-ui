@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Relay from 'react-relay';
 import some from 'lodash/some';
-
 import RouteListHeader from './RouteListHeader';
 import RouteStopListContainer from './RouteStopListContainer';
 

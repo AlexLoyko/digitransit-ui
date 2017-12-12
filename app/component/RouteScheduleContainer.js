@@ -12,7 +12,12 @@ import DateSelect from './DateSelect';
 import PrintLink from './PrintLink';
 import Loading from './Loading';
 
+
 const DATE_FORMAT = 'YYYYMMDD';
+
+const relayInitialVariables = {
+  serviceDay: '19700101',
+};
 
 class RouteScheduleContainer extends Component {
   static propTypes = {
@@ -34,6 +39,7 @@ class RouteScheduleContainer extends Component {
       newTrip.stoptimes = keyBy(trip.stoptimes, 'stop.id');
       return newTrip;
     });
+
     transformedTrips = sortBy(transformedTrips,
       trip => trip.stoptimes[stops[0].id].scheduledDeparture);
     return transformedTrips;
@@ -85,7 +91,7 @@ class RouteScheduleContainer extends Component {
 
       return (
         <RouteScheduleTripRow
-          key={trip.id}
+          key={trip.gtfsId}
           departureTime={departureTime}
           arrivalTime={arrivalTime}
         />);
@@ -141,10 +147,6 @@ class RouteScheduleContainer extends Component {
       </div>);
   }
 }
-
-const relayInitialVariables = {
-  serviceDay: '19700101',
-};
 
 export const relayFragment = {
   pattern: () => Relay.QL`
